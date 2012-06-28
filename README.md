@@ -46,3 +46,10 @@ In particular:
  * In settings.py, provide a random guid for SECURE_COOKIE
  * In the templates, update the html titles accordingly
  * In base.html, provide a valid Google Analytics profile ID
+ 
+Resources
+---------
+
+[App Engine Overview and Docs](https://developers.google.com/appengine/docs/python/overview)
+
+[Twitter Bootstrap Documentation](http://twitter.github.com/bootstrap/)
