@@ -1,3 +1,11 @@
+/* Make sure content doesn't get hidden by nav bar by bumping it down */
 body {
   padding-top: 60px;
+}
+
+/* Make sure index hero h1 tag looks ok on mobile phones */
+@media screen and (max-width: 480px) {
+  h1, .hero-unit h1 {
+    font-size: 24pt;
+  }
 }
