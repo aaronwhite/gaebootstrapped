@@ -49,6 +49,7 @@ In particular:
  
 Resources
 ---------
+[App Engine Dashboard](https://appengine.google.com/)
 
 [App Engine Overview and Docs](https://developers.google.com/appengine/docs/python/overview)
 
