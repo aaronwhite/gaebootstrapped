@@ -7,17 +7,15 @@ import urllib2
 
 import settings
 
-from google.appengine.ext import webapp
 from google.appengine.ext import db
+from google.appengine.api import users
+from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
-from google.appengine.api import mail, urlfetch
-from google.appengine.api import taskqueue
-from google.appengine.api.taskqueue import Queue
 
 from simplejson import dumps
 
-from libs import lilcookies
+from libs.lilcookies import *
 from libs import oauth
 
 from utils import *
@@ -25,14 +23,28 @@ from managers import *
 
 template.register_template_library('filters')
 
-class BaseHandler(webapp.RequestHandler):
-  def get_current_user(self):
-    cookieutil = LilCookies(self, settings.SECURE_COOKIE)
-    cookie = cookieutil.get_secure_cookie('_wda')
-    if cookie:
-      return get_user(cookie)
+def require_login(func):
+  def validate(self, *args):
+    user = users.get_current_user()
+    if user is None:
+      self.redirect(self.get_login_url())
+      return
     else:
-      return None
+      self.set_current_user(get_or_create_user(user))
+      self.user = get_or_create_user(user)
+      func(self, *args)
+        
+  return validate
+
+class BaseHandler(webapp.RequestHandler):
+  def get_login_url(self):
+    return users.create_login_url(self.request.uri)
+  
+  def get_logout_url(self):
+    return users.create_logout_url("/")
+
+  def set_current_user(self, user):
+    self.user = user  
 
   def render(self, template_file, template_vars=None):
     if template_vars is None:
@@ -44,6 +56,9 @@ class BaseHandler(webapp.RequestHandler):
     template_vars['debug'] = settings.DEBUG == True
     template_vars['host'] = settings.get_host()
 
+    template_vars['login_url'] = self.get_login_url()
+    template_vars['logout_url'] = self.get_logout_url()
+
     path = os.path.join(os.path.dirname(__file__), "views", template_file)
     self.response.out.write(template.render(path, template_vars))
 
@@ -52,6 +67,7 @@ class Index(BaseHandler):
     self.render('index.html', {})
 
 class Dashboard(BaseHandler):
+  @require_login
   def get(self):
     self.render('dashboard.html', {})
 

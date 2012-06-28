@@ -13,11 +13,11 @@
       <ul class="nav pull-right">
         <li class="dropdown">
            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Your Profile
+            {{current_user.guser}}
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/">Logout</a></li>
+            <li><a href="{{logout_url}}">Logout</a></li>
           </ul>
         </li>
       </ul>
