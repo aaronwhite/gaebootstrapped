@@ -1,6 +1,8 @@
 Welcome to GAE-Bootstrapped
+=============
 
-Orientation:
+Orientation
+-----------
 
 	app.yaml: GAE's core app description	
 	
@@ -27,6 +29,7 @@ Orientation:
 
 	- libs: Place different 3rd party Python libraries here
 
-Getting started:
+Getting started
+---------------
 
 	Do a search on "changetihs" to find places you should provide an updated value.
